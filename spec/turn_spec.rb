@@ -94,4 +94,40 @@ RSpec.describe Turn do
 
     expect(turn.winner).to eq("No Winner")
   end
+
+  it "can pile cards correctly for basic turn" do
+    deck1 = Deck.new([card1, card2, card5])
+    deck2 = Deck.new([card3, card4, card6])
+    player1 = Player.new("Clarisa", deck1)
+    player2 = Player.new("Jordan", deck2)
+    turn = Turn.new(player1, player2)
+
+    turn.pile_cards
+
+    expect(turn.spoils_of_war).to eq([card1, card3])
+  end
+
+  it "can pile cards correctly for war turn" do
+    deck1 = Deck.new([card1, card2, card5])
+    deck2 = Deck.new([card4, card3, card6])
+    player1 = Player.new("Clarisa", deck1)
+    player2 = Player.new("Jordan", deck2)
+    turn = Turn.new(player1, player2)
+
+    turn.pile_cards
+
+    expect(turn.spoils_of_war).to eq([card1, card4, card2, card3, card5, card6])
+  end
+
+  it "can pile cards correctly for mutually assured destruction turn" do
+    deck1 = Deck.new([card1, card2, card3])
+    deck2 = Deck.new([card4, card5, card6])
+    player1 = Player.new("Clarisa", deck1)
+    player2 = Player.new("Jordan", deck2)
+    turn = Turn.new(player1, player2)
+
+    turn.pile_cards
+
+    expect(turn.spoils_of_war).to eq([])
+  end
 end
