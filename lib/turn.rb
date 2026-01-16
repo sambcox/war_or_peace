@@ -25,7 +25,7 @@ class Turn
     when :war
       player1.deck.rank_of_card_at(2) > player2.deck.rank_of_card_at(2) ? player1 : player2
     when :mutually_assured_destruction
-      nil
+      "No Winner"
     end
   end
 

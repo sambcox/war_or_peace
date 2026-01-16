@@ -64,4 +64,34 @@ RSpec.describe Turn do
 
     expect(turn.type).to eq(:mutually_assured_destruction)
   end
+
+  it "can determine the winner of a basic turn" do
+    deck1 = Deck.new([card1, card2, card5])
+    deck2 = Deck.new([card3, card4, card6])
+    player1 = Player.new("Clarisa", deck1)
+    player2 = Player.new("Jordan", deck2)
+    turn = Turn.new(player1, player2)
+
+    expect(turn.winner).to eq(player2)
+  end
+
+  it "can determine the winner of a war turn" do
+    deck1 = Deck.new([card1, card2, card5])
+    deck2 = Deck.new([card4, card3, card6])
+    player1 = Player.new("Clarisa", deck1)
+    player2 = Player.new("Jordan", deck2)
+    turn = Turn.new(player1, player2)
+
+    expect(turn.winner).to eq(player1)
+  end
+
+  it "returns no winner for winner in mutually assured destruction turn" do
+    deck1 = Deck.new([card1, card2, card3])
+    deck2 = Deck.new([card4, card5, card6])
+    player1 = Player.new("Clarisa", deck1)
+    player2 = Player.new("Jordan", deck2)
+    turn = Turn.new(player1, player2)
+
+    expect(turn.winner).to eq("No Winner")
+  end
 end
