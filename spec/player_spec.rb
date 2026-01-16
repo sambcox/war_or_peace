@@ -4,33 +4,27 @@ require './lib/card'
 require './lib/player'
 
 RSpec.describe Player do
+  let(:cards) do
+    [
+      Card.new(:heart, '3', 3),
+      Card.new(:diamond, 'Queen', 12),
+      Card.new(:spade, '5', 5)
+    ]
+  end
+
+  let(:deck) { Deck.new(cards) }
+  let(:player) { Player.new("Clarisa", deck) }
+  let(:empty_player) { Player.new("Jordan", Deck.new([])) }
+
   it "exists and has a deck of cards" do
-    card1 = Card.new(:heart, '3', 3)
-    card2 = Card.new(:diamond, 'Queen', 12)
-    card3 = Card.new(:spade, '5', 5)
-
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new("Clarisa", deck)
-
-    expect(player).to be_an_instance_of(Player)
+    expect(player).to be_a(Player)
     expect(player.name).to eq("Clarisa")
     expect(player.deck).to eq(deck)
-    expect(player.deck.cards).to eq([card1, card2, card3])
+    expect(player.deck.cards).to eq(cards)
   end
 
   it "can determine if a player has lost" do
-    card1 = Card.new(:heart, '3', 3)
-    card2 = Card.new(:diamond, 'Queen', 12)
-    card3 = Card.new(:spade, '5', 5)
-
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new("Clarisa", deck)
-
     expect(player.has_lost?).to eq(false)
-
-    empty_deck = Deck.new([])
-    player2 = Player.new("Jordan", empty_deck)
-
-    expect(player2.has_lost?).to eq(true)
+    expect(empty_player.has_lost?).to eq(true)
   end
 end
