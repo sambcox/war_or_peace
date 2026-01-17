@@ -8,13 +8,14 @@ class Turn
   end
 
   def type
-    if player1.deck.cards[0].rank != player2.deck.cards[0].rank
+    unless player1.deck.cards[0].rank == player2.deck.cards[0].rank
       :basic
-    elsif player1.deck.cards[2] && player2.deck.cards[2] &&
-          player1.deck.cards[2].rank == player2.deck.cards[2].rank
-      :mutually_assured_destruction
     else
-      :war
+      if player1.deck.cards[2] && player2.deck.cards[2] && player1.deck.cards[2].rank == player2.deck.cards[2].rank
+        :mutually_assured_destruction
+      else
+        :war
+      end
     end
   end
 
@@ -23,7 +24,13 @@ class Turn
     when :basic
       player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0) ? player1 : player2
     when :war
-      player1.deck.rank_of_card_at(2) > player2.deck.rank_of_card_at(2) ? player1 : player2
+      if player1.deck.cards[2] && player2.deck.cards[2]
+        player1.deck.rank_of_card_at(2) > player2.deck.rank_of_card_at(2) ? player1 : player2
+      elsif player1.deck.cards[2]
+        player1
+      else
+        player2
+      end
     when :mutually_assured_destruction
       "No Winner"
     end
@@ -48,11 +55,11 @@ class Turn
   end
 
   def award_spoils(winner)
-    return unless winner
+    return if winner == "No Winner"
 
     @spoils_of_war.each do |card|
       winner.deck.add_card(card)
     end
-    @spoils_of_war.clear
+    @spoils_of_war = []
   end
 end
