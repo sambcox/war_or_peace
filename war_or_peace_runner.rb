@@ -37,16 +37,14 @@ class Runner
     command = gets.chomp
     if command.downcase == "go"
       round = 0
+      winner_name = ""
+      turn = Turn.new(player1, player2)
       while round < 100000
         round += 1
-        if player1.has_lost?
-          print "*~*~*~* #{player2.name} has won the game! *~*~*~*\n"
-          break
-        elsif player2.has_lost?
-          print "*~*~*~* #{player1.name} has won the game! *~*~*~*\n"
+        if player1.has_lost? || player2.has_lost?
+          print "*~*~*~* #{winner_name} has won the game! *~*~*~*\n"
           break
         else
-          turn = Turn.new(player1, player2)
           turn_type = turn.type
           winner = turn.winner
           winner_name = winner.is_a?(String) ? winner : winner.name
